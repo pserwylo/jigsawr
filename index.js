@@ -1,16 +1,142 @@
-$(document).ready(function () {
-    var escapeArgs = function (args) {
-        var ss = [];
-        for (var i in args) {
-            ss.push(escape(i) + '=' + escape(args[i]));
-        }
-        if (ss.length) {
-            return '?' + ss.join('&');
-        }
-    }
-    
+function selectStaticImage( thumbnailPath, imagePath ) {
+	$( '#staticImages .thumbnail').attr( 'src', thumbnailPath );
+	$( '#staticImages input[name=staticImage]').val( imagePath );
+	$( '#staticImagesDialog' ).dialog( 'close' );
+}
+
+function init( config ) {
+	if ( config != null ) {
+		if ( config.hasOwnProperty( 'source' ) ) {
+			if ( config.source == "static" ) {
+				initStaticImages( config.images );
+			} else {
+				throw new Error( "Unknown image source: '" + config.source + "'" );
+			}
+		}
+	}
+}
+
+function initStaticImages( images ) {
+	if ( typeof images == 'undefined' || !( images instanceof Array ) ) {
+		throw new Error( "Expected an array of static images" );
+	} else {
+		for ( var i = 0; i < images.length; i ++ ) {
+			var image = images[ i ];
+			var liTag = $( '<li><a onclick="selectStaticImage( \'' + image.thumbnail + '\', \'' + image.image + '\' );"><img src="' + image.thumbnail + '" /></a></li>' );
+			$( '#staticImagesDialog ul' ).append( liTag );
+		}
+		$( 'form' ).get( 0 ).className = 'static';
+	}
+}
+
+function showImageBySrc( src ) {
+	var im = $('<img>').attr('src', src);
+	imElt = im.get(0);
+	var isLoaded = false;
+	im.load(function () {
+		if (!isLoaded) {
+			showJigsaw(src, imElt.width, imElt.height);
+			isLoaded = true;
+		}
+	});
+	if (imElt.complete) {
+		im.trigger('load');
+	}
+}
+
+function setupJigsaw() {
+	$( '#f' ).addClass( 'l' );
+	var em = $('#a a').height(); // SO TEMPTING to just write 13 here and be done with it.
+	jigWd = $(document).width();
+	jigHt = $(document).height() - 6 * em;
+}
+
+// Called once we know the image and its dimensions.
+function showJigsaw( src, wd, ht ) {
+	recentSrc = src;
+	if (3 * wd < jigWd && 2 * ht < jigHt) {
+		ht *= .5 * jigWd / wd;
+		wd = jigWd * .5;
+	}
+	if (wd > jigWd) {
+		ht *= jigWd / wd;
+		wd = jigWd;
+	}
+	if (ht > jigHt) {
+		wd *= jigHt / ht;
+		ht = jigHt;
+	}
+	var n = $('#d').val();
+	var args = {
+		u: src,
+		wd: wd,
+		ht: ht,
+		nh: Math.ceil(Math.pow(n * wd / ht, .5)),
+		nv: Math.ceil(Math.pow(n * ht / wd, .5))
+	};
+	var embed = $('<embed>').attr({
+		src: 'jigsaw.svg' + escapeArgs(args),
+		type: 'image/svg+xml',
+		width: jigWd,
+		height: jigHt
+	});
+	$('#x').empty().append(embed);
+	$('body').addClass('j');
+	$('#f').removeClass('l');
+}
+
+function escapeArgs(args) {
+	var ss = [];
+	for (var i in args) {
+		ss.push(escape(i) + '=' + escape(args[i]));
+	}
+
+	if ( ss.length ) {
+		return '?' + ss.join('&');
+	} else {
+		return "";
+	}
+}
+
+var jigHt, jigWd, recentSrc;
+
+var SOURCE_STATIC = 1;
+var SOURCE_FLICKR = 2;
+var SOURCE_URL = 4;
+
+var imageSource = SOURCE_STATIC | SOURCE_FLICKR | SOURCE_URL;
+
+var config = "jigsaw-config.json";
+// var config = {};
+
+$(function () {
+
+	if ( typeof config === "string" ) {
+		$.ajax({
+			url: "jigsaw-config.json",
+			dataType: "json",
+			success: function( data ) {
+				init( data );
+			},
+			error: function( response, error, exception ) {
+				console.log( "No jigsaw-config.json defined..." );
+				init( null );
+			}
+		});
+	} else if ( config instanceof Object ) {
+		init( config );
+	}
+
+	$( '#staticImagesDialog' ).dialog({
+		autoOpen: false,
+		modal: true,
+		show: 'fast',
+		hide: 'fast',
+		title: 'Choose picture'
+	});
+
     // If you host your own version of this app, you MUST change the API key.
-    var apiKey = '489c9667c5c8957340a78bacacb051d6';
+    var apiKey = 'Flickr API key goes here';
     var flickrCall = function (meth, args, func) {
         $.extend(args, {
             method: 'flickr.' + meth,
@@ -25,72 +151,23 @@ $(document).ready(function () {
             success: func
         })
     };
-    
-    var jigHt, 
-        jigWd,
-        recentSrc;
-    
-    // Called once we know the image and its dimensions.
-    var showJigsaw = function (src, wd, ht) {
-        recentSrc = src;
-        if (3 * wd < jigWd && 2 * ht < jigHt) {
-            ht *= .5 * jigWd / wd;
-            wd = jigWd * .5;
-        }
-        if (wd > jigWd) {
-            ht *= jigWd / wd;
-            wd = jigWd;
-        }
-        if (ht > jigHt) {
-            wd *= jigHt / ht;
-            ht = jigHt;
-        }
-        var n = $('#d').val();
-        var args = {
-            u: src,
-            wd: wd,
-            ht: ht,
-            nh: Math.ceil(Math.pow(n * wd / ht, .5)),
-            nv: Math.ceil(Math.pow(n * ht / wd, .5))
-        }
-        var embed = $('<embed>').attr({
-            src: 'jigsaw.svg' + escapeArgs(args),
-            type: 'image/svg+xml',
-            width: jigWd,
-            height: jigHt
-        });
-        $('#x').empty().append(embed);
-        $('body').addClass('j');
-        $('#f').removeClass('l');
-    }
-    
+
+	$( '#staticImages input:button').click( function( event ) {
+		$( '#staticImagesDialog' ).dialog( 'open' );
+		return false;
+	});
+
     // User has clicked on the Jigsaw button.
     $('#f').submit(function (evt) {
-        $(this).addClass('l');
-        var em = $('#a a').height(); // SO TEMPTING to just write 13 here and be done with it.
-        jigWd = $(document).width();
-        jigHt = $(document).height() - 6 * em;
-        
-        if ($(this).hasClass('u')) {
+        setupJigsaw();
+		if ($(this).hasClass( 'static')) {
+			showImageBySrc( $( '#staticImages input[name=staticImage]').val() );
+		} else if ($(this).hasClass('u')) {
             // User has specified picture URL directly.
-            // We must loads the image to discover its dimensions.   
-                     
-            var src = $('#u').val();
-            var im = $('<img>').attr('src', src);
-            imElt = im.get(0);
-            var isLoaded = false;
-            im.load(function () {
-                if (!isLoaded) { 
-                    showJigsaw(src, imElt.width, imElt.height);
-                    isLoaded = true;                
-                }
-            });
-            if (imElt.complete) {
-                im.trigger('load');
-            }
+            // We must loads the image to discover its dimensions.
+            showImageBySrc( $('#u').val() );
         } else {
             // User has supplied Flickr tags; use API to find image src and dimens.
-            
             var tags = $('#t').val();
             var args = {
                 tags: tags.split().join(','),

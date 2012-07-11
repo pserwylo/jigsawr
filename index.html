@@ -3,8 +3,13 @@
     <head>
         <meta charset="utf-8">
         <title>Jigsawr</title>
-        <meta name="author" content="Damian Cugley">
-        <link rel="stylesheet" href="index.css" type="text/css">
+        <meta name="author" content="Damian Cugley" />
+        <link rel="stylesheet" href="index.css" type="text/css" />
+        <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.21/themes/ui-lightness/jquery-ui.css" />
+
+        <script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery/jquery-1.4.2.min.js"></script>
+        <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.21/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="index.js"></script>
     </head>
     <body>
         <h1>Jigsawr</h1>
@@ -12,14 +17,18 @@
             <div id="dt">
                 <label for="t">Flickr tag:</label>
                 <input name="t" id="t">
-                <b>or</b>
-                <a>choose your own picture</a>
             </div>
             <div id="du">
                 <label for="u">Picture URL:</label>
                 <input name="u" id="u">
-                <b>or</b>
-                <a>choose a Flickr tag</a>
+            </div>
+            <div id="staticImages">
+                <input type="button" value="Select picture" />
+                <img src="" class="thumbnail" />
+                <input type="hidden" name="staticImage" />
+                <div id="staticImagesDialog">
+                    <ul></ul>
+                </div>
             </div>
             <div>
                 <label for="d">Difficulty:</label>
@@ -41,7 +50,5 @@
             <!--<a href="http://damiancugley.livejournal.com/104405.html">A 10K web app By Damian Cugley</a>-->
             <a href="http://jigsawr.org/about/">About Jigsawr</a>
         </p>
-        <script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery/jquery-1.4.2.min.js"></script>
-        <script type="text/javascript" src="index.js"></script>
     </body>
 </html>

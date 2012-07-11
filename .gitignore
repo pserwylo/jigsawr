@@ -5,3 +5,6 @@ dist
 out.html
 *.min.*
 *.log
+.idea
+*.iml
+images

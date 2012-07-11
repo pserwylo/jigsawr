@@ -78,25 +78,48 @@ form a:hover {
     border-color: #123;
 }
 
-.t  #du {
+.t  #du, .static #du {
     display: none;
 }
-.u #dt {
+.u #dt, .static #dt {
     display: none;
+}
+
+#staticImages .thumbnail {
+    margin: 10px 0;
+    display: block;
+}
+
+#staticImagesDialog ul li {
+    display: inline;
+    vertical-align: middle;
+}
+
+#staticImagesDialog ul {
+    list-style: none;
+    margin: 5px;
+}
+
+.j form #staticImages .thumbnail {
+    max-height: 30px;
+    margin: 0;
+    vertical-align: middle;
+    display: inline;
 }
 
 form.l {
     background: #99AA85 url(spin.gif) right 50% no-repeat;
 }
 
+/* Form moved to the top position when completing the jigsaw */
 .j form {
     float: left;
     margin: 0.5em;
     padding: 0.5em 20px;
     width: auto;
-    height: 1.5em;
-    
-    -moz-border-radius: 0.75em; 
+    height: auto;
+
+    -moz-border-radius: 0.75em;
     -webkit-border-radius: 0.75em; 
     border-radius: 0.75em; 
 }
@@ -149,3 +172,4 @@ p a:hover {
     border-color: #FFF;
     background-color: rgba(255, 255, 240, .2);
 }
+
