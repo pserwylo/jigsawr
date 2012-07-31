@@ -91,7 +91,7 @@ form a:hover {
 }
 
 #staticImagesDialog ul li {
-    display: inline;
+    display: inline-block;
     vertical-align: middle;
 }
 
@@ -111,6 +111,12 @@ form a:hover {
 
 #staticImagesDialog .image-container img {
     height: 75px;
+}
+
+#staticImagesDialog .image-label {
+    font-weight: bold;
+    width: 100px;
+    display: inline-block;
 }
 
 /* Make images about the height of a form element when shown at the top of the page */

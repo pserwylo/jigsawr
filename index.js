@@ -23,7 +23,12 @@ function initStaticImages( images, dialogOptions ) {
 	} else {
 		for ( var i = 0; i < images.length; i ++ ) {
 			var image = images[ i ];
-			var liTag = $( '<li><div class="image-container"><a onclick="selectStaticImage( \'' + image.thumbnail + '\', \'' + image.image + '\' );"><img src="' + image.thumbnail + '" /></a></div></li>' );
+			var label = "";
+			if ( image.hasOwnProperty( 'label' ) )
+			{
+				label = "<br/><span class='image-label'>" + image.label + "</span>";
+			}
+			var liTag = $( '<li><div class="image-container"><a onclick="selectStaticImage( \'' + image.thumbnail + '\', \'' + image.image + '\' );"><img src="' + image.thumbnail + '" /></a></div>' + label + '</li>' );
 			$( '#staticImagesDialog ul' ).append( liTag );
 		}
 		$( 'form' ).get( 0 ).className = 'static';

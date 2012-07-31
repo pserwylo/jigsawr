@@ -3,18 +3,18 @@
 
      "dialogOptions": {
         "_comment": "Overrides any default proeprties of the jQuery-UI dialog which shows the thumbnails: http://jqueryui.com/demos/dialog/#options. Don't override anything silly like autoOpen or else it will break the behaviour of the dialog.",
-        "width": 200,
-        "height": 200
+        "width": 400,
+        "height": 300
     },
 
 	"images" : [
 		{
-			"label": "Puffing Billy at Belrave",
+			"label": "Credits: Some photographer",
 			"image": "images/puffing-billy-belgrave.jpg",
 			"thumbnail": "images/puffing-billy-belgrave.thumb.jpg"
 		},
 		{
-			"label": "Puffing Billy travelling",
+			"label": "Credits: Some other photographer",
 			"image": "images/puffing-billy-wide.jpg",
 			"thumbnail": "images/puffing-billy-wide.thumb.jpg"
 		}
