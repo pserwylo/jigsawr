@@ -1,5 +1,5 @@
 function selectStaticImage( thumbnailPath, imagePath ) {
-	$( '#staticImages .thumbnail').attr( 'src', thumbnailPath );
+	$( '#staticImages .thumbnail').attr( 'src', thumbnailPath).removeClass( 'hidden' );
 	$( '#staticImages input[name=staticImage]').val( imagePath );
 	$( '#staticImagesDialog' ).dialog( 'close' );
  }
@@ -164,7 +164,7 @@ $(function () {
         })
     };
 
-	$( '#staticImages input:button').click( function( event ) {
+	$( '#staticImages input:button, #staticImages .thumbnail').click( function( event ) {
 		$( '#staticImagesDialog' ).dialog( 'open' );
 		return false;
 	});

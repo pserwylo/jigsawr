@@ -100,6 +100,10 @@ form a:hover {
     margin: 5px;
 }
 
+.hidden {
+    display: none;
+}
+
 /* Constrains the aspect ratio of the images to 4:3 */
 /* http://stackoverflow.com/questions/3751565/css-100-width-or-height-while-keeping-aspect-ratio */
 #staticImagesDialog .image-container {
