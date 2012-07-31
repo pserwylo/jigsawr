@@ -100,6 +100,20 @@ form a:hover {
     margin: 5px;
 }
 
+/* Constrains the aspect ratio of the images to 4:3 */
+/* http://stackoverflow.com/questions/3751565/css-100-width-or-height-while-keeping-aspect-ratio */
+#staticImagesDialog .image-container {
+    width: 100px;
+    height: 75px;
+    overflow: hidden;
+    display: inline-block;
+}
+
+#staticImagesDialog .image-container img {
+    height: 75px;
+}
+
+/* Make images about the height of a form element when shown at the top of the page */
 .j form #staticImages .thumbnail {
     max-height: 30px;
     margin: 0;

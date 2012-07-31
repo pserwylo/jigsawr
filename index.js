@@ -2,13 +2,14 @@ function selectStaticImage( thumbnailPath, imagePath ) {
 	$( '#staticImages .thumbnail').attr( 'src', thumbnailPath );
 	$( '#staticImages input[name=staticImage]').val( imagePath );
 	$( '#staticImagesDialog' ).dialog( 'close' );
-}
+ }
 
 function init( config ) {
 	if ( config != null ) {
 		if ( config.hasOwnProperty( 'source' ) ) {
 			if ( config.source == "static" ) {
-				initStaticImages( config.images );
+				var dialogOptions = config.hasOwnProperty( 'dialogOptions' ) ? config.dialogOptions : {};
+				initStaticImages( config.images, dialogOptions );
 			} else {
 				throw new Error( "Unknown image source: '" + config.source + "'" );
 			}
@@ -16,16 +17,30 @@ function init( config ) {
 	}
 }
 
-function initStaticImages( images ) {
+function initStaticImages( images, dialogOptions ) {
 	if ( typeof images == 'undefined' || !( images instanceof Array ) ) {
 		throw new Error( "Expected an array of static images" );
 	} else {
 		for ( var i = 0; i < images.length; i ++ ) {
 			var image = images[ i ];
-			var liTag = $( '<li><a onclick="selectStaticImage( \'' + image.thumbnail + '\', \'' + image.image + '\' );"><img src="' + image.thumbnail + '" /></a></li>' );
+			var liTag = $( '<li><div class="image-container"><a onclick="selectStaticImage( \'' + image.thumbnail + '\', \'' + image.image + '\' );"><img src="' + image.thumbnail + '" /></a></div></li>' );
 			$( '#staticImagesDialog ul' ).append( liTag );
 		}
 		$( 'form' ).get( 0 ).className = 'static';
+
+		var options = $.extend(
+			{
+				autoOpen: false,
+				modal: true,
+				show: 'fast',
+				hide: 'fast',
+				title: 'Choose picture'
+			},
+			dialogOptions
+		);
+
+		$( '#staticImagesDialog' ).dialog( options );
+
 	}
 }
 
@@ -126,14 +141,6 @@ $(function () {
 	} else if ( config instanceof Object ) {
 		init( config );
 	}
-
-	$( '#staticImagesDialog' ).dialog({
-		autoOpen: false,
-		modal: true,
-		show: 'fast',
-		hide: 'fast',
-		title: 'Choose picture'
-	});
 
     // If you host your own version of this app, you MUST change the API key.
     var apiKey = 'Flickr API key goes here';

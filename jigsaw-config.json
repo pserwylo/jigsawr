@@ -1,5 +1,12 @@
 {
 	"source": "static",
+
+     "dialogOptions": {
+        "_comment": "Overrides any default proeprties of the jQuery-UI dialog which shows the thumbnails: http://jqueryui.com/demos/dialog/#options. Don't override anything silly like autoOpen or else it will break the behaviour of the dialog.",
+        "width": 200,
+        "height": 200
+    },
+
 	"images" : [
 		{
 			"label": "Puffing Billy at Belrave",
