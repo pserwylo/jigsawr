@@ -100,7 +100,7 @@ form a:hover {
     margin: 5px;
 }
 
-.hidden {
+#staticImages .thumbnail.hidden {
     display: none;
 }
 
